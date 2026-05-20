@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cours HTML — GoMyCode Dakar</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0f0f13; --bg2:#16161e; --bg3:#1e1e2a; --bg4:#252535;
+  --border:#2a2a3a; --or:#ff6b35; --og:rgba(255,107,53,.12);
+  --gr:#2ecc71; --gb:rgba(46,204,113,.1);
+  --rd:#e74c3c; --rb:rgba(231,76,60,.1);
+  --bl:#3b82f6; --bb:rgba(59,130,246,.1);
+  --yl:#f59e0b;
+  --tx:#e8e8f0; --tx2:#9090a8; --tx3:#5a5a72;
+  --kw:#ff79c6; --tg:#8be9fd; --at:#50fa7b; --vl:#f1fa8c; --cm:#6272a4; --ct:#f8f8f2;
+  --fn:'Space Grotesk',sans-serif; --mo:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fn);background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
+
+/* SIDEBAR */
+.sb{position:fixed;top:0;left:0;width:255px;height:100vh;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100}
+.sb-hd{padding:1.2rem 1.2rem .9rem;border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:.9rem}
+.logo-ic{width:36px;height:36px;border-radius:8px;background:var(--or);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.logo-tx{font-size:13px;font-weight:700;line-height:1.3}
+.logo-sub{font-size:11px;color:var(--tx2);font-weight:400}
+.gp-row{display:flex;justify-content:space-between;font-size:11px;color:var(--tx2);margin-bottom:4px}
+.gp-bar{background:var(--bg4);border-radius:4px;height:5px;overflow:hidden}
+.gp-fill{height:100%;background:var(--or);border-radius:4px;transition:width .5s}
+.nav{flex:1;overflow-y:auto;padding:.5rem 0}
+.ni{display:flex;align-items:center;gap:10px;padding:.6rem 1.2rem;cursor:pointer;font-size:13px;color:var(--tx2);border:none;background:none;width:100%;font-family:var(--fn);position:relative;transition:all .2s}
+.ni:hover{color:var(--tx);background:var(--bg3)}
+.ni.act{color:var(--or);background:var(--og)}
+.ni.act::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--or);border-radius:0 2px 2px 0}
+.ni-ic{width:26px;height:26px;border-radius:7px;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.ni.act .ni-ic{background:var(--og)}
+.ni.done .ni-ic{background:var(--gb)}
+.ni-tx{flex:1;font-weight:500;text-align:left}
+.ni-ck{font-size:12px;color:var(--gr);opacity:0;transition:opacity .3s}
+.ni.done .ni-ck{opacity:1}
+.sb-ft{padding:.75rem 1.2rem;border-top:1px solid var(--border);font-size:11px;color:var(--tx3)}
+
+/* MAIN */
+.main{margin-left:255px}
+.mod{display:none}
+.mod.act{display:block}
+
+/* HERO */
+.hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:1.5rem 2.25rem 0;position:sticky;top:0;z-index:50}
+.hero-top{display:flex;align-items:center;gap:10px;margin-bottom:.3rem}
+.m-badge{background:var(--og);color:var(--or);font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid rgba(255,107,53,.2);letter-spacing:.5px;text-transform:uppercase}
+.m-dur{font-size:12px;color:var(--tx3)}
+.m-ttl{font-size:21px;font-weight:700;margin-bottom:1.2rem}
+.tabs{display:flex;border-bottom:1px solid var(--border)}
+.tb{padding:.6rem 1rem;font-size:13px;font-family:var(--fn);color:var(--tx2);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;font-weight:500;transition:all .2s;white-space:nowrap}
+.tb:hover{color:var(--tx)}
+.tb.act{color:var(--or);border-bottom-color:var(--or)}
+
+/* TABS */
+.tc{display:none}
+.tc.act{display:block}
+
+/* LESSON */
+.lesson{padding:1.75rem 2.25rem;max-width:880px}
+.anl{background:linear-gradient(135deg,rgba(255,107,53,.07),rgba(255,107,53,.02));border:1px solid rgba(255,107,53,.2);border-radius:14px;padding:1.2rem 1.4rem;margin:1.4rem 0}
+.anl-lbl{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--or);text-transform:uppercase;margin-bottom:.4rem}
+.anl p{font-size:14px;color:var(--tx2);line-height:1.8}
+.anl strong{color:var(--tx)}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:9px;margin:1.3rem 0}
+.cc{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:.9rem;transition:all .2s}
+.cc:hover{border-color:var(--or);transform:translateY(-2px)}
+.cc-ic{font-size:20px;margin-bottom:.35rem}
+.cc-tg{font-family:var(--mo);font-size:11px;color:var(--tg);margin-bottom:3px}
+.cc-ds{font-size:11px;color:var(--tx2);line-height:1.5}
+h2.st{font-size:17px;font-weight:700;margin:1.75rem 0 .6rem;padding-top:1.4rem;border-top:1px solid var(--border)}
+h2.st:first-child{border-top:none;padding-top:0;margin-top:0}
+p.lt{font-size:14px;color:var(--tx2);line-height:1.8;margin-bottom:.6rem}
+.tip{background:var(--bb);border:1px solid rgba(59,130,246,.2);border-radius:9px;padding:.9rem 1.2rem;margin:.9rem 0;font-size:13px;color:var(--tx2);line-height:1.7}
+.tip strong{color:var(--bl)}
+.wrn{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.2);border-radius:9px;padding:.9rem 1.2rem;margin:.9rem 0;font-size:13px;color:var(--tx2);line-height:1.7}
+.wrn strong{color:var(--yl)}
+
+/* CODE BLOCK */
+.cw{position:relative;margin:1.1rem 0}
+.cfl{background:var(--bg4);border:1px solid var(--border);border-bottom:none;border-radius:9px 9px 0 0;padding:.4rem .9rem;font-family:var(--mo);font-size:11px;color:var(--tx3);display:flex;align-items:center;gap:5px}
+.cfl span{color:#ff8c5a}
+.cb{background:#0d1117;border:1px solid var(--border);border-radius:0 0 9px 9px;padding:1.1rem;overflow-x:auto;font-family:var(--mo);font-size:12.5px;line-height:1.8}
+.ln-row{display:flex}
+.ln{color:#3d4054;min-width:26px;user-select:none;margin-right:14px;text-align:right;font-size:11px;padding-top:1px}
+.lc{flex:1}
+.kw{color:var(--kw)}.tg{color:var(--tg)}.at{color:var(--at)}.vl{color:var(--vl)}.cm{color:var(--cm);font-style:italic}.ct{color:var(--ct)}
+.cp{position:absolute;top:36px;right:10px;background:var(--bg4);border:1px solid var(--border);color:var(--tx2);font-size:11px;font-family:var(--mo);padding:3px 9px;border-radius:5px;cursor:pointer;transition:all .2s}
+.cp:hover{background:var(--or);color:#fff;border-color:var(--or)}
+code{font-family:var(--mo);font-size:12px;background:var(--bg4);color:var(--tg);padding:2px 5px;border-radius:4px}
+
+/* ATELIER */
+.atl{display:grid;grid-template-columns:1fr 1fr;height:calc(100vh - 142px)}
+.ed-s{border-right:1px solid var(--border);display:flex;flex-direction:column}
+.ed-tb{background:var(--bg3);border-bottom:1px solid var(--border);padding:.5rem 1rem;display:flex;align-items:center;gap:8px}
+.ed-tb span{font-size:12px;color:var(--tx2);font-family:var(--mo)}
+.run-b{background:var(--or);color:#fff;border:none;border-radius:6px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;margin-left:auto;font-family:var(--fn);transition:opacity .2s}
+.run-b:hover{opacity:.85}
+.rst-b{background:var(--bg4);color:var(--tx2);border:1px solid var(--border);border-radius:6px;padding:5px 11px;font-size:12px;cursor:pointer;font-family:var(--fn);transition:all .2s}
+.rst-b:hover{border-color:var(--or);color:var(--or)}
+.ced{flex:1;background:#0d1117;color:var(--at);font-family:var(--mo);font-size:13px;line-height:1.8;border:none;outline:none;resize:none;padding:1.1rem;tab-size:2}
+.pv-s{display:flex;flex-direction:column}
+.pv-tb{background:var(--bg3);border-bottom:1px solid var(--border);padding:.5rem 1rem;display:flex;align-items:center;gap:8px}
+.pv-tb span{font-size:12px;color:var(--tx2)}
+.dots{display:flex;gap:5px}
+.dot{width:10px;height:10px;border-radius:50%}
+.dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
+.pvf{flex:1;border:none;background:#fff}
+
+/* EXERCICES */
+.exp{padding:1.75rem 2.25rem}
+.exb{background:var(--bg3);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1.4rem}
+.exh{background:var(--bg4);padding:.9rem 1.4rem;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.ex-n{width:28px;height:28px;border-radius:50%;background:var(--or);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ex-t{font-size:15px;font-weight:600}
+.ex-d{margin-left:auto;font-size:11px;padding:2px 8px;border-radius:20px;font-weight:700}
+.easy{background:rgba(46,204,113,.15);color:var(--gr)}
+.med{background:rgba(245,158,11,.15);color:var(--yl)}
+.hard{background:rgba(231,76,60,.15);color:var(--rd)}
+.exbd{padding:1.2rem 1.4rem}
+.exbd p{font-size:14px;color:var(--tx2);margin-bottom:.7rem;line-height:1.7}
+.exbd ul{padding-left:1.4rem}
+.exbd li{font-size:14px;color:var(--tx2);line-height:2.1}
+.exbd li strong{color:#ff8c5a}
+.lex{display:inline-flex;align-items:center;gap:8px;background:var(--or);color:#fff;border:none;border-radius:8px;padding:.55rem 1.2rem;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--fn);margin-top:.7rem;transition:opacity .2s}
+.lex:hover{opacity:.85}
+
+/* QUIZ */
+.qp{padding:1.75rem 2.25rem;max-width:700px}
+.qhd{margin-bottom:1.75rem}
+.qhd h2{font-size:19px;font-weight:700;margin-bottom:.35rem}
+.qhd p{font-size:14px;color:var(--tx2)}
+.qprev{display:flex;align-items:center;gap:14px;background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:.8rem 1.2rem;margin-bottom:1.75rem}
+.qprev-ic{font-size:22px}
+.qprev-inf{font-size:13px;color:var(--tx2)}
+.qprev-inf strong{color:var(--tx);display:block;font-size:15px;font-weight:700}
+.qq{margin-bottom:2.25rem;padding-bottom:2.25rem;border-bottom:1px solid var(--border)}
+.qq:last-of-type{border-bottom:none}
+.q-n{font-size:10px;font-weight:700;letter-spacing:1px;color:var(--or);text-transform:uppercase;margin-bottom:.5rem}
+.q-t{font-size:15px;font-weight:600;margin-bottom:1.1rem;line-height:1.5}
+.q-code{background:#0d1117;border:1px solid var(--border);border-radius:9px;padding:.9rem;font-family:var(--mo);font-size:12.5px;color:var(--ct);margin-bottom:1.1rem;line-height:1.7}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{display:flex;align-items:flex-start;gap:11px;padding:.8rem 1.1rem;border:1px solid var(--border);border-radius:9px;cursor:pointer;transition:all .2s;background:var(--bg3);font-size:14px;color:var(--tx2);line-height:1.5}
+.opt:hover:not(.lck){border-color:var(--or);color:var(--tx);background:var(--og)}
+.opt-l{width:23px;height:23px;border-radius:6px;background:var(--bg4);color:var(--tx2);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.opt.ok{border-color:var(--gr);background:var(--gb);color:var(--tx)}
+.opt.ok .opt-l{background:var(--gr);color:#fff}
+.opt.ko{border-color:var(--rd);background:var(--rb);color:var(--tx)}
+.opt.ko .opt-l{background:var(--rd);color:#fff}
+.opt.lck{cursor:default}
+.opt.rev{border-color:var(--gr);background:var(--gb);opacity:.6}
+.opt.rev .opt-l{background:var(--gr);color:#fff}
+.q-exp{background:var(--bg4);border:1px solid var(--border);border-radius:9px;padding:.9rem 1.1rem;margin-top:.6rem;font-size:13px;color:var(--tx2);line-height:1.7;display:none}
+.q-exp.sh{display:block}
+.q-exp strong{color:var(--tx)}
+.qres{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:1.75rem;text-align:center;margin-top:1.75rem;display:none}
+.qres.sh{display:block}
+.re-em{font-size:44px;margin-bottom:.75rem}
+.re-st{font-size:26px;margin-bottom:.75rem}
+.re-ttl{font-size:20px;font-weight:700;margin-bottom:.4rem}
+.re-sc{font-size:38px;font-weight:700;color:var(--or);margin:.75rem 0}
+.re-msg{font-size:14px;color:var(--tx2);margin-bottom:1.25rem;line-height:1.7}
+.vbtn{display:block;width:100%;padding:.8rem;background:var(--or);color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--fn);margin-top:1.75rem;transition:opacity .2s}
+.vbtn:hover{opacity:.85}
+.rbtn{background:var(--bg4);color:var(--tx);border:1px solid var(--border);border-radius:9px;padding:.55rem 1.4rem;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--fn);transition:all .2s;margin-top:.6rem}
+.rbtn:hover{border-color:var(--or);color:var(--or)}
+.done-bn{margin:1.75rem 2.25rem;background:linear-gradient(135deg,rgba(46,204,113,.1),rgba(46,204,113,.03));border:1px solid rgba(46,204,113,.3);border-radius:14px;padding:1.6rem;text-align:center;display:none}
+.done-bn.sh{display:block}
+.done-bn h3{font-size:19px;font-weight:700;color:var(--gr);margin-bottom:.4rem}
+.done-bn p{font-size:14px;color:var(--tx2);margin-bottom:1rem}
+.nbtn{background:var(--gr);color:#fff;border:none;border-radius:8px;padding:.65rem 1.75rem;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--fn);transition:opacity .2s}
+.nbtn:hover{opacity:.85}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+
+@media(max-width:860px){
+  .sb{width:56px}
+  .logo-tx,.sb-ft,.gp-row,.gp-bar,.ni-tx,.ni-ck{display:none}
+  .logo{justify-content:center}
+  .ni{justify-content:center;padding:.7rem}
+  .main{margin-left:56px}
+  .atl{grid-template-columns:1fr;height:auto}
+  .ed-s{height:50vh}
+  .pv-s{height:45vh}
+  .lesson,.exp,.qp{padding:1.2rem}
+  .hero{padding:1.2rem 1.2rem 0}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sb">
+  <div class="sb-hd">
+    <div class="logo">
+      <div class="logo-ic">🌐</div>
+      <div class="logo-tx">Cours HTML<div class="logo-sub">GoMyCode Dakar</div></div>
+    </div>
+    <div class="gp-row"><span>Progression</span><span id="gpt">0/6</span></div>
+    <div class="gp-bar"><div class="gp-fill" id="gpf" style="width:0%"></div></div>
+  </div>
+  <nav class="nav" id="nav"></nav>
+  <div class="sb-ft">Coach Mbengue · 2025</div>
+</aside>
+
+<!-- MAIN -->
+<main class="main" id="main"></main>
+
+<script>
+// ============================================================
+// DATA — starter code stored separately, no template literals
+// ============================================================
+var STARTERS = {
+  "0-0": "<!-- Complète cette page HTML -->\n<!-- Commence par le DOCTYPE -->\n\n",
+  "0-1": "<!-- Page avec 3 sections -->\n\n",
+  "1-0": "<!-- Boutique du marché Sandaga -->\n\n",
+  "1-1": "<!-- Restaurant Teranga - Menu -->\n\n",
+  "2-0": "<!-- Fallou Fashion - Tailleur à Dakar -->\n<h1>Fallou Fashion 👗</h1>\n\n",
+  "2-1": "<!-- Galerie Fallou Fashion -->\n<nav>\n  <!-- tes liens ancres -->\n</nav>\n\n",
+  "3-0": "<!-- Formulaire Innovatech -->\n<h2>Contactez-nous</h2>\n<form action=\"#\" method=\"post\">\n\n</form>\n",
+  "3-1": "<!-- Inscription GoMyCode Dakar -->\n<h2>Rejoins GoMyCode 🚀</h2>\n<form>\n\n</form>\n",
+  "4-0": "<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Restaurant Teranga</title>\n</head>\n<body>\n\n  <!-- Construis ici avec la sémantique HTML5 -->\n\n</body>\n</html>",
+  "5-0": "<!-- Stock Fallou Fashion -->\n<table border=\"1\" cellpadding=\"8\">\n\n</table>\n",
+  "5-1": "<!-- Emploi du temps GoMyCode -->\n<table border=\"1\" cellpadding=\"12\" cellspacing=\"0\">\n\n</table>\n"
+};
+
+var DEFAULTS = [
+  // Module 0
+  "<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Ma première page</title>\n</head>\n<body>\n  <h1>Bonjour Dakar ! 🌍</h1>\n  <p>Ma toute première page HTML.</p>\n</body>\n</html>",
+  // Module 1
+  "<h1>Bienvenue chez Innovatech 🚀</h1>\n<h2>Nos services</h2>\n<p>Nous créons des sites web <strong>professionnels</strong> pour les commerces de <em>Dakar</em>.</p>\n\n<h3>Ce qu'on fait</h3>\n<ul>\n  <li>Sites vitrines</li>\n  <li>E-commerce Wave & Orange Money</li>\n  <li>Réseaux sociaux</li>\n</ul>\n\n<h3>Notre process</h3>\n<ol>\n  <li>Discussion client</li>\n  <li>Maquette</li>\n  <li>Développement</li>\n  <li>Mise en ligne</li>\n</ol>",
+  // Module 2
+  "<h2>Nos réseaux 📱</h2>\n\n<!-- Lien externe (nouvel onglet) -->\n<a href=\"https://instagram.com\" target=\"_blank\">\n  📷 Instagram\n</a>\n<br>\n\n<!-- Lien WhatsApp -->\n<a href=\"https://wa.me/221771234567\">\n  💬 WhatsApp\n</a>\n<br><br>\n\n<!-- Image depuis internet -->\n<img\n  src=\"https://picsum.photos/300/180\"\n  alt=\"Photo boutique Dakar\"\n  width=\"300\"\n>\n\n<!-- Image cliquable -->\n<a href=\"https://google.com\" target=\"_blank\">\n  <img src=\"https://picsum.photos/80/80\" alt=\"Logo\">\n</a>",
+  // Module 3
+  "<h2>Commande Wave 💳</h2>\n\n<form action=\"#\" method=\"post\">\n\n  <label for=\"nom\">Votre nom :</label><br>\n  <input type=\"text\" id=\"nom\" name=\"nom\"\n    placeholder=\"Ex: Amadou Diallo\" required>\n  <br><br>\n\n  <label for=\"tel\">Numéro Wave :</label><br>\n  <input type=\"tel\" id=\"tel\" name=\"tel\"\n    placeholder=\"77 000 00 00\">\n  <br><br>\n\n  <label for=\"produit\">Produit :</label><br>\n  <select id=\"produit\" name=\"produit\">\n    <option value=\"\">-- Choisir --</option>\n    <option value=\"boubou\">Boubou brodé - 25 000 F</option>\n    <option value=\"robe\">Robe wax - 15 000 F</option>\n    <option value=\"kaftan\">Kaftan homme - 18 000 F</option>\n  </select>\n  <br><br>\n\n  <label for=\"note\">Note de livraison :</label><br>\n  <textarea id=\"note\" name=\"note\"\n    rows=\"3\" placeholder=\"Quartier, adresse...\"></textarea>\n  <br><br>\n\n  <input type=\"checkbox\" id=\"accept\">\n  <label for=\"accept\">J'accepte les conditions</label>\n  <br><br>\n\n  <button type=\"submit\">✅ Confirmer</button>\n  <button type=\"reset\">🔄 Effacer</button>\n\n</form>",
+  // Module 4
+  "<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Innovatech Dakar</title>\n</head>\n<body>\n\n  <header>\n    <h1>🌐 Innovatech</h1>\n    <nav>\n      <a href=\"#accueil\">Accueil</a> |\n      <a href=\"#services\">Services</a> |\n      <a href=\"#contact\">Contact</a>\n    </nav>\n  </header>\n\n  <main>\n    <section id=\"accueil\">\n      <h2>Agence Web à Dakar</h2>\n      <p>Nous créons des sites pour les PME sénégalaises.</p>\n    </section>\n\n    <section id=\"services\">\n      <h2>Nos Services</h2>\n      <article>\n        <h3>Site Vitrine</h3>\n        <p>Page pro pour ton activité.</p>\n      </article>\n      <article>\n        <h3>E-commerce</h3>\n        <p>Vends en ligne avec Wave.</p>\n      </article>\n    </section>\n\n    <aside>\n      <h3>Contact rapide</h3>\n      <p>📞 +221 77 000 00 00</p>\n    </aside>\n  </main>\n\n  <footer>\n    <p>© 2025 Innovatech · Dakar, Sénégal</p>\n  </footer>\n\n</body>\n</html>",
+  // Module 5
+  "<h2>Tarifs Innovatech 💼</h2>\n\n<table border=\"1\" cellpadding=\"10\" cellspacing=\"0\">\n\n  <caption>Nos offres 2025</caption>\n\n  <thead>\n    <tr>\n      <th>Offre</th>\n      <th>Prix FCFA</th>\n      <th>Délai</th>\n      <th>Inclus</th>\n    </tr>\n  </thead>\n\n  <tbody>\n    <tr>\n      <td><strong>Starter</strong></td>\n      <td>75 000</td>\n      <td>5 jours</td>\n      <td>5 pages, responsive</td>\n    </tr>\n    <tr>\n      <td><strong>Pro</strong></td>\n      <td>150 000</td>\n      <td>10 jours</td>\n      <td>10 pages + blog</td>\n    </tr>\n    <tr>\n      <td><strong>Premium</strong></td>\n      <td>350 000</td>\n      <td>21 jours</td>\n      <td>E-commerce complet</td>\n    </tr>\n  </tbody>\n\n  <tfoot>\n    <tr>\n      <td colspan=\"4\">✅ Wave & Orange Money · Maintenance 3 mois</td>\n    </tr>\n  </tfoot>\n\n</table>"
+];
+
+var MODS = [
+  {id:0, icon:'🏗️', title:'Structure HTML', dur:'25 min', badge:'Module 1',
+   exs:[
+    {n:1, title:'Page de présentation', diff:'easy',
+     desc:'Crée ta première page HTML complète avec la structure de base.',
+     steps:['Ajoute le <strong>DOCTYPE</strong> et les 3 balises racines','Dans le &lt;head&gt; : &lt;title&gt; avec ton prénom','Dans le &lt;head&gt; : &lt;meta charset="UTF-8"&gt;','Dans le &lt;body&gt; : un &lt;h1&gt; avec ton prénom + emoji','Ajoute un &lt;p&gt; : "Étudiant à GoMyCode Dakar"'],
+     sk:'0-0'},
+    {n:2, title:'Page multi-sections', diff:'med',
+     desc:'Crée une page avec 3 sections séparées.',
+     steps:['Structure de base complète avec lang="fr"','3 sections séparées par &lt;hr&gt;','Chaque section : un &lt;h2&gt; + 2 &lt;p&gt;','Au moins 3 commentaires &lt;!-- --&gt;','Un &lt;title&gt; descriptif'],
+     sk:'0-1'}
+   ],
+   quiz:[
+    {q:'Que signifie DOCTYPE dans &lt;!DOCTYPE html&gt; ?',
+     opts:['Document Type Certificate','Document Type Declaration','Dom Tree Create','Data Output Type Code'],
+     c:1, exp:'<strong>DOCTYPE</strong> = Document Type Declaration. Il indique au navigateur quelle version HTML utiliser. Sans lui, le navigateur entre en "quirks mode" et peut mal afficher ta page.'},
+    {q:'Laquelle de ces structures HTML est correcte ?',
+     opts:['&lt;body&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;/html&gt;&lt;/body&gt;','&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;','&lt;head&gt;&lt;html&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;&lt;/head&gt;','&lt;html&gt;&lt;body&gt;&lt;head&gt;&lt;/head&gt;&lt;/body&gt;&lt;/html&gt;'],
+     c:1, exp:'Structure correcte : <strong>&lt;html&gt;</strong> contient d\'abord <strong>&lt;head&gt;</strong> puis <strong>&lt;body&gt;</strong>. L\'ordre est obligatoire.'},
+    {q:'À quoi sert l\'attribut lang="fr" dans &lt;html lang="fr"&gt; ?',
+     opts:['Changer la langue du navigateur','Indiquer la langue aux moteurs de recherche et lecteurs d\'écran','Traduire automatiquement la page','C\'est décoratif'],
+     c:1, exp:'<strong>lang="fr"</strong> aide les <strong>moteurs de recherche</strong> (SEO) et les <strong>lecteurs d\'écran</strong> (accessibilité). Bonne pratique obligatoire !'},
+    {q:'Quel élément contient les métadonnées invisibles ?',
+     opts:['&lt;body&gt;','&lt;header&gt;','&lt;head&gt;','&lt;meta&gt;'],
+     c:2, exp:'<strong>&lt;head&gt;</strong> contient &lt;title&gt;, &lt;meta&gt;, &lt;link&gt;... Ces infos ne s\'affichent pas dans la page mais sont essentielles pour le navigateur.'},
+    {q:'Que se passe-t-il si on oublie &lt;/html&gt; ?',
+     opts:['La page ne s\'affiche pas','Erreur rouge dans le navigateur','Le navigateur corrige automatiquement (tolérance aux erreurs)','La page s\'affiche en mode sombre'],
+     c:2, exp:'Les navigateurs modernes sont <strong>tolérants aux erreurs HTML</strong>. Ils essaient de corriger et afficher quand même. Mais c\'est une mauvaise pratique !'}
+   ]},
+
+  {id:1, icon:'📝', title:'Texte & Listes', dur:'30 min', badge:'Module 2',
+   exs:[
+    {n:1, title:'Carte d\'un commerçant Sandaga', diff:'easy',
+     desc:'Crée la page HTML d\'un commerçant du marché Sandaga.',
+     steps:['Un <strong>&lt;h1&gt;</strong> avec le nom de la boutique + emoji','Un <strong>&lt;p&gt;</strong> avec un mot en &lt;strong&gt; et un en &lt;em&gt;','Un <strong>&lt;h2&gt;</strong> "Nos produits" + &lt;ul&gt; avec 4 articles','Un <strong>&lt;h2&gt;</strong> "Commander" + &lt;ol&gt; avec 3 étapes','Un &lt;hr&gt; puis un &lt;p&gt; avec les horaires'],
+     sk:'1-0'},
+    {n:2, title:'Menu restaurant sénégalais', diff:'med',
+     desc:'Crée un menu HTML complet pour un restaurant.',
+     steps:['Titre en <strong>&lt;h1&gt;</strong>','3 rubriques &lt;h2&gt; : Entrées, Plats, Desserts','Chaque rubrique : &lt;ul&gt; avec prix en &lt;strong&gt;','Utilise <strong>&lt;del&gt;</strong> pour un prix barré en promo','Une <strong>&lt;blockquote&gt;</strong> avec un avis client'],
+     sk:'1-1'}
+   ],
+   quiz:[
+    {q:'Combien de balises &lt;h1&gt; recommande-t-on par page ?',
+     opts:['Pas de limite','Maximum 6','Une seule (bonne pratique SEO)','Deux au maximum'],
+     c:2, exp:'<strong>Un seul &lt;h1&gt;</strong> par page est la bonne pratique SEO. Il représente le titre principal. Google l\'utilise pour comprendre le sujet de ta page.'},
+    {q:'Différence entre &lt;ul&gt; et &lt;ol&gt; ?',
+     opts:['ul pour grandes listes, ol pour petites','ul = liste à puces (ordre non important), ol = liste numérotée (ordre important)','ul en HTML5, ol en HTML4','Aucune différence visible'],
+     c:1, exp:'<strong>&lt;ul&gt;</strong> = liste à puces, l\'ordre ne compte pas. <strong>&lt;ol&gt;</strong> = liste numérotée, l\'ordre est important (ex: étapes d\'une recette).'},
+    {q:'Que fait la balise &lt;strong&gt; ?',
+     opts:['Met en gras ET donne une importance sémantique forte','Seulement mettre en gras (visuel uniquement)','Crée un lien fort','Identique à &lt;b&gt;'],
+     c:0, exp:'<strong>&lt;strong&gt;</strong> met en gras ET donne une <strong>importance sémantique</strong>. Les lecteurs d\'écran le lisent avec emphase. &lt;b&gt; est juste visuel. Préfère toujours &lt;strong&gt;.'},
+    {q:'Quelle balise pour une citation longue ?',
+     opts:['&lt;quote&gt;','&lt;cite&gt;','&lt;blockquote&gt;','&lt;q&gt;'],
+     c:2, exp:'<strong>&lt;blockquote&gt;</strong> = citations longues (bloc). <strong>&lt;q&gt;</strong> = citations courtes en ligne. <strong>&lt;cite&gt;</strong> référence le titre d\'une œuvre.'},
+    {q:'Que fait &lt;br&gt; ?',
+     opts:['Crée un nouveau paragraphe','Ajoute un espace horizontal','Insère un saut de ligne sans nouveau paragraphe','Brise la mise en page'],
+     c:2, exp:'<strong>&lt;br&gt;</strong> (break) insère un retour à la ligne sans fermer le paragraphe. À utiliser avec modération !'}
+   ]},
+
+  {id:2, icon:'🔗', title:'Liens & Images', dur:'35 min', badge:'Module 3',
+   exs:[
+    {n:1, title:'Vitrine tailleur Fallou Fashion', diff:'easy',
+     desc:'Crée une page vitrine avec liens et photos.',
+     steps:['Affiche <strong>2 photos</strong> (picsum.photos/280/200)','Un <strong>lien WhatsApp</strong> (wa.me/221...)','Un <strong>lien Instagram</strong> avec target="_blank"','Un <strong>lien email</strong> (mailto:)','Une <strong>image cliquable</strong> vers Instagram'],
+     sk:'2-0'},
+    {n:2, title:'Galerie avec navigation ancres', diff:'med',
+     desc:'Crée une galerie avec navigation interne.',
+     steps:['Un &lt;nav&gt; avec <strong>3 liens ancres</strong> (#robes, #boubous, #accessoires)','Chaque section a un <strong>id</strong> correspondant + 2 images','Un lien <strong>"Retour en haut"</strong> après chaque section','Les images ont des <strong>alt</strong> descriptifs','Un lien avec attribut <strong>download</strong>'],
+     sk:'2-1'}
+   ],
+   quiz:[
+    {q:'Que fait target="_blank" ?',
+     opts:['Ouvre dans la même page','Ouvre dans un nouvel onglet','Ouvre en plein écran','Bloque jusqu\'à confirmation'],
+     c:1, exp:'<strong>target="_blank"</strong> ouvre le lien dans un <strong>nouvel onglet</strong>. Bonne pratique : ajouter <strong>rel="noopener noreferrer"</strong> pour la sécurité.'},
+    {q:'Utilité de l\'attribut alt sur une image ?',
+     opts:['Rien, c\'est optionnel','Alternative textuelle : malvoyants, SEO, et si l\'image ne charge pas','Le titre affiché au survol','Le nom du fichier'],
+     c:1, exp:'<strong>alt</strong> est crucial pour : <strong>Accessibilité</strong> (lecteurs d\'écran), <strong>SEO</strong> (Google indexe les images via les alt), et l\'<strong>affichage</strong> quand l\'image échoue.'},
+    {q:'Comment créer un lien vers une section de la même page ?',
+     code:'&lt;a href="???"&gt;Aller aux services&lt;/a&gt;\n&lt;div id="services"&gt;...&lt;/div&gt;',
+     opts:['href="services.html"','href="#services"','href="@services"','href="goto:services"'],
+     c:1, exp:'<strong>href="#services"</strong> crée un lien ancre. Le <strong>#</strong> = "sur cette page". La cible doit avoir <strong>id="services"</strong>.'},
+    {q:'Comment créer un lien qui ouvre l\'appli email ?',
+     opts:['href="email:contact@sn.com"','href="send:contact@sn.com"','href="mailto:contact@sn.com"','href="mail=contact@sn.com"'],
+     c:2, exp:'<strong>mailto:</strong> ouvre le client email par défaut. Tu peux aussi ajouter un sujet : <code>mailto:email@sn?subject=Bonjour</code>'},
+    {q:'Laquelle de ces balises img est correcte et accessible ?',
+     opts:['&lt;img src="photo.jpg"&gt;','&lt;img src="photo.jpg" alt=""&gt;','&lt;img src="photo.jpg" alt="Robe en wax bleue"&gt;','&lt;image src="photo.jpg" alt="photo"&gt;'],
+     c:2, exp:'Un <strong>alt descriptif et utile</strong> est la bonne pratique. Un alt vide est valide UNIQUEMENT pour les images décoratives. La balise s\'appelle <strong>&lt;img&gt;</strong>.'}
+   ]},
+
+  {id:3, icon:'📋', title:'Formulaires HTML', dur:'40 min', badge:'Module 4',
+   exs:[
+    {n:1, title:'Formulaire de contact Innovatech', diff:'easy',
+     desc:'Crée un formulaire de contact professionnel.',
+     steps:['Champs : <strong>nom</strong> (text), <strong>email</strong> (email), <strong>téléphone</strong> (tel) — tous required','Un <strong>&lt;select&gt;</strong> "Service souhaité" avec 4 options','Un <strong>&lt;textarea&gt;</strong> "Description" (rows=4)','Des <strong>radio buttons</strong> pour le budget (3 tranches)','Bouton <strong>submit</strong> + bouton <strong>reset</strong>'],
+     sk:'3-0'},
+    {n:2, title:'Inscription GoMyCode', diff:'hard',
+     desc:'Formulaire complet avec validation HTML5.',
+     steps:['Prénom + Nom (required, minlength=2)','Email avec validation native (type="email")','Date de naissance : <strong>type="date"</strong>','<strong>Checkboxes</strong> : formations (HTML, CSS, JS, Python)','Niveau : <strong>radio buttons</strong> (3 niveaux)','Photo profil : <strong>type="file" accept="image/*"</strong>'],
+     sk:'3-1'}
+   ],
+   quiz:[
+    {q:'À quoi sert l\'attribut for dans &lt;label for="nom"&gt; ?',
+     code:'&lt;label for="nom"&gt;Votre nom :&lt;/label&gt;\n&lt;input type="text" id="nom"&gt;',
+     opts:['C\'est décoratif','Associe le label à l\'input via son id, pour accessibilité et cliquabilité','Définit le format attendu','Indique que le champ est obligatoire'],
+     c:1, exp:'<strong>for="nom"</strong> lie le label à l\'input avec <strong>id="nom"</strong>. Bénéfice : cliquer le label met le focus sur l\'input. Les lecteurs d\'écran lisent correctement le champ.'},
+    {q:'Quel type d\'input valide automatiquement le format email ?',
+     opts:['type="text"','type="mail"','type="email"','type="validate-email"'],
+     c:2, exp:'<strong>type="email"</strong> active la validation native. Il vérifie qu\'il y a un @ et un domaine. Sur mobile, il affiche un clavier adapté avec @ visible.'},
+    {q:'Différence entre radio et checkbox ?',
+     opts:['Aucune différence','Radio = un seul choix dans un groupe, Checkbox = plusieurs choix possibles','Radio = plusieurs choix, Checkbox = un seul choix','Radio pour nombres, Checkbox pour texte'],
+     c:1, exp:'<strong>Radio</strong> : un seul choix dans un groupe (même name). Ex: choisir une ville. <strong>Checkbox</strong> : plusieurs choix possibles. Ex: cocher plusieurs intérêts.'},
+    {q:'Que fait l\'attribut required ?',
+     opts:['Rend en lecture seule','Empêche la soumission si le champ est vide','Met le champ en rouge automatiquement','Oblige au moins 3 caractères'],
+     c:1, exp:'<strong>required</strong> empêche l\'envoi du formulaire si le champ est vide. Le navigateur affiche automatiquement un message d\'erreur. Pas besoin de JavaScript !'},
+    {q:'Quelle méthode pour envoyer données sensibles ?',
+     opts:['method="get"','method="post"','method="send"','method="secure"'],
+     c:1, exp:'<strong>method="post"</strong> envoie les données dans le corps de la requête (invisible dans l\'URL). Pour les mots de passe et formulaires de contact : toujours POST.'}
+   ]},
+
+  {id:4, icon:'🏛️', title:'Sémantique HTML5', dur:'30 min', badge:'Module 5',
+   exs:[
+    {n:1, title:'Page Restaurant Teranga', diff:'med',
+     desc:'Construis une page sémantique complète pour un restaurant.',
+     steps:['<strong>&lt;header&gt;</strong> + logo texte + <strong>&lt;nav&gt;</strong> (Menu, Réservation, Contact)','<strong>&lt;main&gt;</strong> avec 2 <strong>&lt;section&gt;</strong> : "Notre histoire" et "Nos plats"','Dans "Nos plats" : 3 <strong>&lt;article&gt;</strong> (Thiéboudienne, Yassa, Mafé)','<strong>&lt;aside&gt;</strong> avec horaires','<strong>&lt;footer&gt;</strong> avec adresse et réseaux'],
+     sk:'4-0'}
+   ],
+   quiz:[
+    {q:'Combien de balises &lt;main&gt; par page ?',
+     opts:['Autant qu\'on veut','Maximum 3','Une seule (contenu principal unique)','Deux : desktop et mobile'],
+     c:2, exp:'<strong>&lt;main&gt;</strong> = contenu principal. Il doit être <strong>unique</strong> par page. Plusieurs &lt;main&gt; = erreur HTML invalide.'},
+    {q:'Différence entre &lt;section&gt; et &lt;article&gt; ?',
+     opts:['Ce sont des synonymes','&lt;article&gt; = contenu autonome (blog, produit), &lt;section&gt; = groupement thématique','&lt;section&gt; pour le texte, &lt;article&gt; pour les images','&lt;article&gt; peut contenir des &lt;section&gt; mais pas l\'inverse'],
+     c:1, exp:'<strong>&lt;article&gt;</strong> = contenu autonome qui a du sens sorti de son contexte. <strong>&lt;section&gt;</strong> = groupe thématique lié.'},
+    {q:'À quoi sert &lt;aside&gt; ?',
+     opts:['Créer une sidebar visuelle','Contenu secondaire lié mais non essentiel au contenu principal','Mettre du texte en italique','Navigation secondaire'],
+     c:1, exp:'<strong>&lt;aside&gt;</strong> = contenu secondaire, tangentiellement lié au contenu principal. Ex: citation, bio d\'auteur, liens connexes.'},
+    {q:'Pourquoi la sémantique plutôt que des &lt;div&gt; partout ?',
+     opts:['Aucune raison','Les div chargent plus lentement','SEO, accessibilité, code plus lisible et maintenable','Les div sont interdits en HTML5'],
+     c:2, exp:'Balises sémantiques : <strong>SEO</strong> (Google comprend mieux la structure), <strong>Accessibilité</strong> (lecteurs d\'écran), <strong>Maintenabilité</strong> (code plus clair).'},
+    {q:'Où placer la navigation principale ?',
+     opts:['Dans &lt;main&gt;','Dans &lt;header&gt; ou &lt;body&gt;, dans une balise &lt;nav&gt;','Dans &lt;aside&gt;','Dans &lt;section id="navigation"&gt;'],
+     c:1, exp:'<strong>&lt;nav&gt;</strong> contient les liens de navigation principaux. Il se place souvent dans le <strong>&lt;header&gt;</strong>. On peut avoir plusieurs &lt;nav&gt;.'}
+   ]},
+
+  {id:5, icon:'📊', title:'Tables HTML', dur:'30 min', badge:'Module 6',
+   exs:[
+    {n:1, title:'Stock boutique Fallou Fashion', diff:'easy',
+     desc:'Crée un tableau de gestion de stock.',
+     steps:['Un <strong>&lt;caption&gt;</strong> "Inventaire Mai 2025"','5 colonnes : <strong>Réf, Article, Taille, Prix, Stock</strong>','5 lignes de produits dans <strong>&lt;tbody&gt;</strong>','Un <strong>&lt;tfoot&gt;</strong> avec <strong>colspan</strong>','Utilise <strong>rowspan</strong> pour fusionner 2 lignes'],
+     sk:'5-0'},
+    {n:2, title:'Emploi du temps GoMyCode', diff:'hard',
+     desc:'Crée l\'emploi du temps avec rowspan et colspan.',
+     steps:['Colonnes : <strong>Heure, Lundi à Vendredi</strong>','3 créneaux : 9h-12h, 14h-17h, 18h-20h','Un cours sur 2 jours : <strong>colspan="2"</strong>','Un cours sur 2 créneaux : <strong>rowspan="2"</strong>','Colorie les cours HTML, CSS, JS avec <strong>style="background:..."</strong>'],
+     sk:'5-1'}
+   ],
+   quiz:[
+    {q:'Quelle balise définit une cellule d\'en-tête ?',
+     opts:['&lt;td&gt;','&lt;header&gt;','&lt;th&gt;','&lt;thead&gt;'],
+     c:2, exp:'<strong>&lt;th&gt;</strong> (Table Header) = cellule d\'en-tête : gras, centré, avec scope sémantique. <strong>&lt;thead&gt;</strong> est la section qui contient les &lt;th&gt;.'},
+    {q:'Comment fusionner 3 colonnes ?',
+     code:'&lt;td ???="3"&gt;Paiement Wave accepté&lt;/td&gt;',
+     opts:['merge="3"','colspan="3"','span="3"','width="3"'],
+     c:1, exp:'<strong>colspan="3"</strong> fusionne horizontalement sur 3 colonnes. <strong>rowspan</strong> fusionne verticalement sur plusieurs lignes.'},
+    {q:'Quelle balise donne un titre au tableau ?',
+     opts:['&lt;title&gt;','&lt;thead&gt;','&lt;caption&gt;','&lt;h3&gt;'],
+     c:2, exp:'<strong>&lt;caption&gt;</strong> se place immédiatement après &lt;table&gt;. C\'est le titre du tableau pour l\'accessibilité et le SEO.'},
+    {q:'Structure correcte d\'un tableau ?',
+     opts:['&lt;table&gt;&lt;tr&gt;&lt;thead&gt;&lt;th&gt;...','&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;','&lt;table&gt;&lt;th&gt;&lt;tr&gt;...','&lt;tableau&gt;&lt;ligne&gt;&lt;cellule&gt;...'],
+     c:1, exp:'Structure : <strong>&lt;table&gt;</strong> > <strong>&lt;thead/tbody/tfoot&gt;</strong> > <strong>&lt;tr&gt;</strong> > <strong>&lt;th&gt;</strong> ou <strong>&lt;td&gt;</strong>. Toujours dans cet ordre.'},
+    {q:'À quoi sert &lt;tfoot&gt; ?',
+     opts:['Créer un pied de tableau : résumés, totaux, notes','Identique à &lt;tbody&gt;','Mettre le tableau en bas de page','Ajouter une ligne en italique'],
+     c:0, exp:'<strong>&lt;tfoot&gt;</strong> = lignes de pied : totaux, sous-totaux, notes légales. Sémantiquement distinct du corps, peut rester visible si le tableau est long.'}
+   ]}
+];
+
+// ============================================================
+// COURS CONTENT (pre-built HTML strings)
+// ============================================================
+var COURS = {};
+
+COURS[0] = '<h2 class="st">Qu\'est-ce que le HTML ?</h2>' +
+'<p class="lt">HTML = <strong>HyperText Markup Language</strong>. C\'est la fondation de tout site web. Ce n\'est pas un langage de programmation, c\'est un langage de <strong>balisage</strong> : on entoure le contenu avec des balises pour lui donner du sens.</p>' +
+'<div class="anl"><div class="anl-lbl">🏠 Analogie Dakar</div><p>Une page HTML c\'est comme construire une maison à Dakar. Le <strong>DOCTYPE</strong> c\'est le permis de construire. La balise <strong>&lt;html&gt;</strong> c\'est la clôture. Le <strong>&lt;head&gt;</strong> c\'est les fondations cachées, et le <strong>&lt;body&gt;</strong> c\'est tout ce que les visiteurs voient : les meubles, les murs, la déco.</p></div>' +
+'<h2 class="st">Comment fonctionne une balise ?</h2>' +
+'<p class="lt">Une balise s\'ouvre et se ferme autour du contenu :</p>' +
+code('exemple.html', [
+  '<span class="tg">&lt;p&gt;</span><span class="ct">Ceci est un paragraphe</span><span class="tg">&lt;/p&gt;</span>   <span class="cm">&lt;!-- ouvrante + contenu + fermante --&gt;</span>',
+  '<span class="tg">&lt;h1&gt;</span><span class="ct">Titre principal</span><span class="tg">&lt;/h1&gt;</span>  <span class="cm">&lt;!-- h1 = heading level 1 --&gt;</span>',
+  '<span class="tg">&lt;img</span> <span class="at">src</span>=<span class="vl">"photo.jpg"</span><span class="tg">&gt;</span>         <span class="cm">&lt;!-- auto-fermante --&gt;</span>'
+]) +
+'<h2 class="st">La structure complète</h2>' +
+'<div class="cg"><div class="cc"><div class="cc-ic">📄</div><div class="cc-tg">&lt;!DOCTYPE html&gt;</div><div class="cc-ds">Déclare HTML5 au navigateur</div></div><div class="cc"><div class="cc-ic">🌍</div><div class="cc-tg">&lt;html lang="fr"&gt;</div><div class="cc-ds">Racine de toute la page</div></div><div class="cc"><div class="cc-ic">🧠</div><div class="cc-tg">&lt;head&gt;</div><div class="cc-ds">Métadonnées invisibles</div></div><div class="cc"><div class="cc-ic">🏷️</div><div class="cc-tg">&lt;title&gt;</div><div class="cc-ds">Texte de l\'onglet navigateur</div></div><div class="cc"><div class="cc-ic">⚙️</div><div class="cc-tg">&lt;meta charset&gt;</div><div class="cc-ds">Encodage des caractères</div></div><div class="cc"><div class="cc-ic">👁️</div><div class="cc-tg">&lt;body&gt;</div><div class="cc-ds">Tout ce que l\'utilisateur voit</div></div></div>' +
+code('index.html', [
+  '<span class="tg">&lt;!DOCTYPE html&gt;</span>',
+  '<span class="tg">&lt;html</span> <span class="at">lang</span>=<span class="vl">"fr"</span><span class="tg">&gt;</span>',
+  '',
+  '  <span class="tg">&lt;head&gt;</span>',
+  '    <span class="tg">&lt;meta</span> <span class="at">charset</span>=<span class="vl">"UTF-8"</span><span class="tg">&gt;</span>',
+  '    <span class="tg">&lt;meta</span> <span class="at">name</span>=<span class="vl">"viewport"</span> <span class="at">content</span>=<span class="vl">"width=device-width"</span><span class="tg">&gt;</span>',
+  '    <span class="tg">&lt;title&gt;</span><span class="ct">Mon site Innovatech</span><span class="tg">&lt;/title&gt;</span>',
+  '  <span class="tg">&lt;/head&gt;</span>',
+  '',
+  '  <span class="tg">&lt;body&gt;</span>',
+  '    <span class="cm">&lt;!-- Tout le contenu visible va ici --&gt;</span>',
+  '    <span class="tg">&lt;h1&gt;</span><span class="ct">Bonjour Dakar !</span><span class="tg">&lt;/h1&gt;</span>',
+  '    <span class="tg">&lt;p&gt;</span><span class="ct">Ma première page web.</span><span class="tg">&lt;/p&gt;</span>',
+  '  <span class="tg">&lt;/body&gt;</span>',
+  '',
+  '<span class="tg">&lt;/html&gt;</span>'
+]) +
+'<div class="tip"><strong>💡 Commentaires :</strong> Tout entre <code>&lt;!--</code> et <code>--&gt;</code> n\'est pas affiché. C\'est pour documenter ton code.</div>' +
+'<div class="wrn"><strong>⚠️ Bonne pratique :</strong> Utilise toujours <code>lang="fr"</code> et <code>charset="UTF-8"</code>. Ça évite les problèmes d\'accents et améliore le SEO.</div>';
+
+COURS[1] = '<h2 class="st">Les titres HTML</h2>' +
+'<div class="anl"><div class="anl-lbl">📰 Analogie Journal Le Soleil</div><p>Le grand titre en première page c\'est le <strong>h1</strong>. Les titres de rubriques c\'est <strong>h2</strong>. Les sous-titres c\'est <strong>h3</strong>. L\'ordre hiérarchique est important pour Google !</p></div>' +
+code('titres.html', [
+  '<span class="tg">&lt;h1&gt;</span><span class="ct">Titre principal — 1 seul par page !</span><span class="tg">&lt;/h1&gt;</span>',
+  '<span class="tg">&lt;h2&gt;</span><span class="ct">Section importante</span><span class="tg">&lt;/h2&gt;</span>',
+  '<span class="tg">&lt;h3&gt;</span><span class="ct">Sous-section</span><span class="tg">&lt;/h3&gt;</span>',
+  '<span class="tg">&lt;h4&gt;</span><span class="ct">Niveau 4 (rare)</span><span class="tg">&lt;/h4&gt;</span>'
+]) +
+'<h2 class="st">Le texte et ses balises</h2>' +
+code('texte.html', [
+  '<span class="tg">&lt;p&gt;</span><span class="ct">Un paragraphe normal.</span><span class="tg">&lt;/p&gt;</span>',
+  '<span class="tg">&lt;strong&gt;</span><span class="ct">Texte important (gras + sens sémantique)</span><span class="tg">&lt;/strong&gt;</span>',
+  '<span class="tg">&lt;em&gt;</span><span class="ct">Texte en emphase (italique)</span><span class="tg">&lt;/em&gt;</span>',
+  '<span class="tg">&lt;mark&gt;</span><span class="ct">Texte surligné en jaune</span><span class="tg">&lt;/mark&gt;</span>',
+  '<span class="tg">&lt;del&gt;</span><span class="ct">Texte barré (prix avant promo)</span><span class="tg">&lt;/del&gt;</span>',
+  '<span class="tg">&lt;small&gt;</span><span class="ct">Mentions légales</span><span class="tg">&lt;/small&gt;</span>',
+  '<span class="tg">&lt;br&gt;</span>   <span class="cm">&lt;!-- Saut de ligne simple --&gt;</span>',
+  '<span class="tg">&lt;hr&gt;</span>   <span class="cm">&lt;!-- Ligne de séparation --&gt;</span>',
+  '<span class="tg">&lt;blockquote&gt;</span><span class="ct">Citation longue d\'un client</span><span class="tg">&lt;/blockquote&gt;</span>'
+]) +
+'<h2 class="st">Les listes</h2>' +
+'<div class="anl"><div class="anl-lbl">🛒 Analogie marché HLM</div><p>La <strong>&lt;ul&gt;</strong> (unordered list) c\'est une liste de produits où l\'ordre ne compte pas. La <strong>&lt;ol&gt;</strong> (ordered list) c\'est les étapes pour payer par Wave : l\'ordre est important !</p></div>' +
+code('listes.html', [
+  '<span class="cm">&lt;!-- Liste à puces (ordre non important) --&gt;</span>',
+  '<span class="tg">&lt;ul&gt;</span>',
+  '  <span class="tg">&lt;li&gt;</span><span class="ct">Thiéboudienne</span><span class="tg">&lt;/li&gt;</span>',
+  '  <span class="tg">&lt;li&gt;</span><span class="ct">Yassa poulet</span><span class="tg">&lt;/li&gt;</span>',
+  '  <span class="tg">&lt;li&gt;</span><span class="ct">Mafé bœuf</span><span class="tg">&lt;/li&gt;</span>',
+  '<span class="tg">&lt;/ul&gt;</span>',
+  '',
+  '<span class="cm">&lt;!-- Liste numérotée (ordre important) --&gt;</span>',
+  '<span class="tg">&lt;ol&gt;</span>',
+  '  <span class="tg">&lt;li&gt;</span><span class="ct">Ouvrir l\'app Wave</span><span class="tg">&lt;/li&gt;</span>',
+  '  <span class="tg">&lt;li&gt;</span><span class="ct">Entrer le montant</span><span class="tg">&lt;/li&gt;</span>',
+  '  <span class="tg">&lt;li&gt;</span><span class="ct">Valider avec le PIN</span><span class="tg">&lt;/li&gt;</span>',
+  '<span class="tg">&lt;/ol&gt;</span>',
+  '',
+  '<span class="cm">&lt;!-- Liste imbriquée --&gt;</span>',
+  '<span class="tg">&lt;ul&gt;</span>',
+  '  <span class="tg">&lt;li&gt;</span><span class="ct">Vêtements</span>',
+  '    <span class="tg">&lt;ul&gt;</span>',
+  '      <span class="tg">&lt;li&gt;</span><span class="ct">Boubous</span><span class="tg">&lt;/li&gt;</span>',
+  '      <span class="tg">&lt;li&gt;</span><span class="ct">Robes</span><span class="tg">&lt;/li&gt;</span>',
+  '    <span class="tg">&lt;/ul&gt;</span>',
+  '  <span class="tg">&lt;/li&gt;</span>',
+  '<span class="tg">&lt;/ul&gt;</span>'
+]) +
+'<div class="tip"><strong>💡 Liste de définitions :</strong> Il existe aussi <code>&lt;dl&gt;</code> avec <code>&lt;dt&gt;</code> (terme) et <code>&lt;dd&gt;</code> (définition). Utile pour un glossaire ou une FAQ.</div>';
+
+COURS[2] = '<h2 class="st">Les liens hypertexte</h2>' +
+'<div class="anl"><div class="anl-lbl">🚕 Analogie taxi clando</div><p>Un lien HTML <strong>&lt;a&gt;</strong> c\'est comme un taxi clando : tu montes dedans (tu cliques), il t\'emmène ailleurs. L\'attribut <strong>href</strong> c\'est la destination. <strong>target="_blank"</strong> c\'est demander un deuxième taxi pendant que tu restes ici.</p></div>' +
+code('liens.html', [
+  '<span class="cm">&lt;!-- Lien externe (nouvel onglet) --&gt;</span>',
+  '<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"https://www.goMyCode.co"</span> <span class="at">target</span>=<span class="vl">"_blank"</span> <span class="at">rel</span>=<span class="vl">"noopener"</span><span class="tg">&gt;</span><span class="ct">GoMyCode</span><span class="tg">&lt;/a&gt;</span>',
+  '',
+  '<span class="cm">&lt;!-- Lien interne (même site) --&gt;</span>',
+  '<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"contact.html"</span><span class="tg">&gt;</span><span class="ct">Page Contact</span><span class="tg">&lt;/a&gt;</span>',
+  '',
+  '<span class="cm">&lt;!-- Ancre (même page) --&gt;</span>',
+  '<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"#services"</span><span class="tg">&gt;</span><span class="ct">Nos services ↓</span><span class="tg">&lt;/a&gt;</span>',
+  '<span class="tg">&lt;div</span> <span class="at">id</span>=<span class="vl">"services"</span><span class="tg">&gt;</span><span class="ct">...</span><span class="tg">&lt;/div&gt;</span>',
+  '',
+  '<span class="cm">&lt;!-- Email --&gt;</span>',
+  '<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"mailto:coach@innovatech.sn"</span><span class="tg">&gt;</span><span class="ct">Nous écrire</span><span class="tg">&lt;/a&gt;</span>',
+  '',
+  '<span class="cm">&lt;!-- WhatsApp --&gt;</span>',
+  '<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"https://wa.me/221771234567"</span><span class="tg">&gt;</span><span class="ct">📱 WhatsApp</span><span class="tg">&lt;/a&gt;</span>',
+  '',
+  '<span class="cm">&lt;!-- Téléchargement --&gt;</span>',
+  '<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"catalogue.pdf"</span> <span class="at">download</span><span class="tg">&gt;</span><span class="ct">⬇️ Catalogue PDF</span><span class="tg">&lt;/a&gt;</span>'
+]) +
+'<h2 class="st">Les images</h2>' +
+'<div class="anl"><div class="anl-lbl">📸 Analogie WhatsApp</div><p>La balise <strong>&lt;img&gt;</strong> c\'est comme envoyer une photo sur WhatsApp. Tu donnes le chemin <strong>src</strong> (source). Le <strong>alt</strong> c\'est la légende pour les malvoyants et Google.</p></div>' +
+code('images.html', [
+  '<span class="cm">&lt;!-- Image locale --&gt;</span>',
+  '<span class="tg">&lt;img</span>',
+  '  <span class="at">src</span>=<span class="vl">"images/logo.png"</span>',
+  '  <span class="at">alt</span>=<span class="vl">"Logo Innovatech Dakar"</span>',
+  '  <span class="at">width</span>=<span class="vl">"200"</span> <span class="at">height</span>=<span class="vl">"100"</span>',
+  '<span class="tg">&gt;</span>',
+  '',
+  '<span class="cm">&lt;!-- Image internet --&gt;</span>',
+  '<span class="tg">&lt;img</span>',
+  '  <span class="at">src</span>=<span class="vl">"https://picsum.photos/400/250"</span>',
+  '  <span class="at">alt</span>=<span class="vl">"Boutique de mode à Dakar"</span>',
+  '<span class="tg">&gt;</span>',
+  '',
+  '<span class="cm">&lt;!-- Image cliquable --&gt;</span>',
+  '<span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"https://instagram.com"</span> <span class="at">target</span>=<span class="vl">"_blank"</span><span class="tg">&gt;</span>',
+  '  <span class="tg">&lt;img</span> <span class="at">src</span>=<span class="vl">"logo.png"</span> <span class="at">alt</span>=<span class="vl">"Notre Instagram"</span><span class="tg">&gt;</span>',
+  '<span class="tg">&lt;/a&gt;</span>'
+]) +
+'<div class="tip"><strong>💡 SEO & Accessibilité :</strong> L\'attribut <code>alt</code> n\'est JAMAIS optionnel sur une image de contenu. Google indexe les images via les alt. Les lecteurs d\'écran les lisent aux malvoyants.</div>';
+
+COURS[3] = '<h2 class="st">Pourquoi les formulaires ?</h2>' +
+'<div class="anl"><div class="anl-lbl">📝 Analogie bon de commande</div><p>Un formulaire HTML c\'est un bon de commande papier au marché HLM. Le <strong>&lt;form&gt;</strong> c\'est la feuille. Les <strong>&lt;input&gt;</strong> c\'est les cases à remplir. Les <strong>&lt;label&gt;</strong> c\'est les noms imprimés. Le <strong>&lt;button submit&gt;</strong> c\'est le coup de tampon final.</p></div>' +
+code('formulaire.html', [
+  '<span class="tg">&lt;form</span> <span class="at">action</span>=<span class="vl">"traitement.php"</span> <span class="at">method</span>=<span class="vl">"post"</span><span class="tg">&gt;</span>',
+  '',
+  '  <span class="cm">&lt;!-- Texte libre --&gt;</span>',
+  '  <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"nom"</span><span class="tg">&gt;</span><span class="ct">Votre nom :</span><span class="tg">&lt;/label&gt;</span>',
+  '  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="vl">"text"</span> <span class="at">id</span>=<span class="vl">"nom"</span> <span class="at">name</span>=<span class="vl">"nom"</span> <span class="at">placeholder</span>=<span class="vl">"Amadou Diallo"</span> <span class="at">required</span><span class="tg">&gt;</span>',
+  '',
+  '  <span class="cm">&lt;!-- Email (validé automatiquement) --&gt;</span>',
+  '  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="vl">"email"</span> <span class="at">placeholder</span>=<span class="vl">"email@sn.com"</span> <span class="at">required</span><span class="tg">&gt;</span>',
+  '',
+  '  <span class="cm">&lt;!-- Téléphone --&gt;</span>',
+  '  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="vl">"tel"</span> <span class="at">placeholder</span>=<span class="vl">"77 000 00 00"</span><span class="tg">&gt;</span>',
+  '',
+  '  <span class="cm">&lt;!-- Liste déroulante --&gt;</span>',
+  '  <span class="tg">&lt;select</span> <span class="at">name</span>=<span class="vl">"service"</span><span class="tg">&gt;</span>',
+  '    <span class="tg">&lt;option</span> <span class="at">value</span>=<span class="vl">""</span><span class="tg">&gt;</span><span class="ct">-- Choisir --</span><span class="tg">&lt;/option&gt;</span>',
+  '    <span class="tg">&lt;option</span> <span class="at">value</span>=<span class="vl">"vitrine"</span><span class="tg">&gt;</span><span class="ct">Site vitrine</span><span class="tg">&lt;/option&gt;</span>',
+  '  <span class="tg">&lt;/select&gt;</span>',
+  '',
+  '  <span class="cm">&lt;!-- Zone de texte --&gt;</span>',
+  '  <span class="tg">&lt;textarea</span> <span class="at">rows</span>=<span class="vl">"4"</span> <span class="at">placeholder</span>=<span class="vl">"Décris ton projet..."</span><span class="tg">&gt;&lt;/textarea&gt;</span>',
+  '',
+  '  <span class="cm">&lt;!-- Checkbox --&gt;</span>',
+  '  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="vl">"checkbox"</span> <span class="at">id</span>=<span class="vl">"wave"</span><span class="tg">&gt;</span>',
+  '  <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"wave"</span><span class="tg">&gt;</span><span class="ct">Paiement Wave</span><span class="tg">&lt;/label&gt;</span>',
+  '',
+  '  <span class="cm">&lt;!-- Radio buttons --&gt;</span>',
+  '  <span class="tg">&lt;input</span> <span class="at">type</span>=<span class="vl">"radio"</span> <span class="at">id</span>=<span class="vl">"r1"</span> <span class="at">name</span>=<span class="vl">"budget"</span> <span class="at">value</span>=<span class="vl">"100k"</span><span class="tg">&gt;</span>',
+  '  <span class="tg">&lt;label</span> <span class="at">for</span>=<span class="vl">"r1"</span><span class="tg">&gt;</span><span class="ct">Moins de 100k FCFA</span><span class="tg">&lt;/label&gt;</span>',
+  '',
+  '  <span class="cm">&lt;!-- Boutons --&gt;</span>',
+  '  <span class="tg">&lt;button</span> <span class="at">type</span>=<span class="vl">"submit"</span><span class="tg">&gt;</span><span class="ct">✅ Envoyer</span><span class="tg">&lt;/button&gt;</span>',
+  '  <span class="tg">&lt;button</span> <span class="at">type</span>=<span class="vl">"reset"</span><span class="tg">&gt;</span><span class="ct">🔄 Effacer</span><span class="tg">&lt;/button&gt;</span>',
+  '',
+  '<span class="tg">&lt;/form&gt;</span>'
+]) +
+'<div class="tip"><strong>💡 Validation HTML5 native :</strong> Les attributs <code>required</code>, <code>type="email"</code>, <code>min</code>, <code>max</code>, <code>minlength</code> valident automatiquement les champs SANS JavaScript !</div>';
+
+COURS[4] = '<h2 class="st">Div vs Sémantique</h2>' +
+'<div class="anl"><div class="anl-lbl">🏘️ Analogie quartier de Dakar</div><p>Avant HTML5, tout le monde mettait des <strong>&lt;div&gt;</strong> partout, comme si une maison n\'avait que des "pièces" sans nom. Avec HTML5 : <strong>&lt;header&gt;</strong> = porte d\'entrée, <strong>&lt;nav&gt;</strong> = couloir, <strong>&lt;main&gt;</strong> = salon, <strong>&lt;article&gt;</strong> = chambre autonome, <strong>&lt;aside&gt;</strong> = terrasse, <strong>&lt;footer&gt;</strong> = cour arrière.</p></div>' +
+'<div class="cg"><div class="cc"><div class="cc-ic">🔝</div><div class="cc-tg">&lt;header&gt;</div><div class="cc-ds">Logo, titre, navigation principale</div></div><div class="cc"><div class="cc-ic">🧭</div><div class="cc-tg">&lt;nav&gt;</div><div class="cc-ds">Liens de navigation</div></div><div class="cc"><div class="cc-ic">📋</div><div class="cc-tg">&lt;main&gt;</div><div class="cc-ds">Contenu principal (UN SEUL)</div></div><div class="cc"><div class="cc-ic">📰</div><div class="cc-tg">&lt;article&gt;</div><div class="cc-ds">Contenu autonome</div></div><div class="cc"><div class="cc-ic">📂</div><div class="cc-tg">&lt;section&gt;</div><div class="cc-ds">Groupe thématique</div></div><div class="cc"><div class="cc-ic">📌</div><div class="cc-tg">&lt;aside&gt;</div><div class="cc-ds">Contenu secondaire</div></div><div class="cc"><div class="cc-ic">🔚</div><div class="cc-tg">&lt;footer&gt;</div><div class="cc-ds">Pied de page</div></div><div class="cc"><div class="cc-ic">📦</div><div class="cc-tg">&lt;div&gt;</div><div class="cc-ds">Conteneur générique (sans sens)</div></div><div class="cc"><div class="cc-ic">💬</div><div class="cc-tg">&lt;span&gt;</div><div class="cc-ds">Inline générique (sans sens)</div></div></div>' +
+code('page-semantique.html', [
+  '<span class="tg">&lt;body&gt;</span>',
+  '  <span class="tg">&lt;header&gt;</span>',
+  '    <span class="tg">&lt;h1&gt;</span><span class="ct">🌐 Innovatech Dakar</span><span class="tg">&lt;/h1&gt;</span>',
+  '    <span class="tg">&lt;nav&gt;</span>',
+  '      <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"#accueil"</span><span class="tg">&gt;</span><span class="ct">Accueil</span><span class="tg">&lt;/a&gt;</span>',
+  '      <span class="tg">&lt;a</span> <span class="at">href</span>=<span class="vl">"#services"</span><span class="tg">&gt;</span><span class="ct">Services</span><span class="tg">&lt;/a&gt;</span>',
+  '    <span class="tg">&lt;/nav&gt;</span>',
+  '  <span class="tg">&lt;/header&gt;</span>',
+  '',
+  '  <span class="tg">&lt;main&gt;</span>',
+  '    <span class="tg">&lt;section</span> <span class="at">id</span>=<span class="vl">"services"</span><span class="tg">&gt;</span>',
+  '      <span class="tg">&lt;h2&gt;</span><span class="ct">Nos Services</span><span class="tg">&lt;/h2&gt;</span>',
+  '      <span class="tg">&lt;article&gt;</span>',
+  '        <span class="tg">&lt;h3&gt;</span><span class="ct">Création de sites</span><span class="tg">&lt;/h3&gt;</span>',
+  '        <span class="tg">&lt;p&gt;</span><span class="ct">Sites vitrine pro.</span><span class="tg">&lt;/p&gt;</span>',
+  '      <span class="tg">&lt;/article&gt;</span>',
+  '    <span class="tg">&lt;/section&gt;</span>',
+  '    <span class="tg">&lt;aside&gt;</span>',
+  '      <span class="tg">&lt;p&gt;</span><span class="ct">📞 +221 77 000 00 00</span><span class="tg">&lt;/p&gt;</span>',
+  '    <span class="tg">&lt;/aside&gt;</span>',
+  '  <span class="tg">&lt;/main&gt;</span>',
+  '',
+  '  <span class="tg">&lt;footer&gt;</span>',
+  '    <span class="tg">&lt;p&gt;</span><span class="ct">© 2025 Innovatech · Dakar</span><span class="tg">&lt;/p&gt;</span>',
+  '  <span class="tg">&lt;/footer&gt;</span>',
+  '<span class="tg">&lt;/body&gt;</span>'
+]) +
+'<div class="tip"><strong>💡 Pourquoi la sémantique ?</strong> Google et les lecteurs d\'écran comprennent mieux votre site. Un bon HTML sémantique = meilleur SEO = plus de clients pour Innovatech !</div>';
+
+COURS[5] = '<h2 class="st">À quoi servent les tableaux ?</h2>' +
+'<div class="anl"><div class="anl-lbl">📊 Analogie cahier de comptes</div><p>Un tableau HTML c\'est le cahier de comptes d\'un commerçant de Sandaga. Le <strong>&lt;table&gt;</strong> c\'est la feuille. Le <strong>&lt;thead&gt;</strong> c\'est la ligne de titres. Le <strong>&lt;tbody&gt;</strong> c\'est toutes les lignes de données. Les <strong>&lt;tr&gt;</strong> c\'est les lignes, les <strong>&lt;td&gt;</strong> les cellules.</p></div>' +
+code('tableau.html', [
+  '<span class="tg">&lt;table</span> <span class="at">border</span>=<span class="vl">"1"</span> <span class="at">cellpadding</span>=<span class="vl">"10"</span> <span class="at">cellspacing</span>=<span class="vl">"0"</span><span class="tg">&gt;</span>',
+  '',
+  '  <span class="tg">&lt;caption&gt;</span><span class="ct">Tarifs Innovatech 2025</span><span class="tg">&lt;/caption&gt;</span>',
+  '',
+  '  <span class="tg">&lt;thead&gt;</span>',
+  '    <span class="tg">&lt;tr&gt;</span>',
+  '      <span class="tg">&lt;th&gt;</span><span class="ct">Offre</span><span class="tg">&lt;/th&gt;</span>',
+  '      <span class="tg">&lt;th&gt;</span><span class="ct">Prix FCFA</span><span class="tg">&lt;/th&gt;</span>',
+  '      <span class="tg">&lt;th&gt;</span><span class="ct">Délai</span><span class="tg">&lt;/th&gt;</span>',
+  '    <span class="tg">&lt;/tr&gt;</span>',
+  '  <span class="tg">&lt;/thead&gt;</span>',
+  '',
+  '  <span class="tg">&lt;tbody&gt;</span>',
+  '    <span class="tg">&lt;tr&gt;</span>',
+  '      <span class="tg">&lt;td&gt;</span><span class="ct">Starter</span><span class="tg">&lt;/td&gt;</span>',
+  '      <span class="tg">&lt;td&gt;</span><span class="ct">75 000</span><span class="tg">&lt;/td&gt;</span>',
+  '      <span class="tg">&lt;td</span> <span class="at">rowspan</span>=<span class="vl">"2"</span><span class="tg">&gt;</span><span class="ct">7 jours</span><span class="tg">&lt;/td&gt;</span>  <span class="cm">&lt;!-- fusionne 2 lignes --&gt;</span>',
+  '    <span class="tg">&lt;/tr&gt;</span>',
+  '    <span class="tg">&lt;tr&gt;</span>',
+  '      <span class="tg">&lt;td&gt;</span><span class="ct">Pro</span><span class="tg">&lt;/td&gt;</span>',
+  '      <span class="tg">&lt;td&gt;</span><span class="ct">150 000</span><span class="tg">&lt;/td&gt;</span>',
+  '    <span class="tg">&lt;/tr&gt;</span>',
+  '  <span class="tg">&lt;/tbody&gt;</span>',
+  '',
+  '  <span class="tg">&lt;tfoot&gt;</span>',
+  '    <span class="tg">&lt;tr&gt;</span>',
+  '      <span class="tg">&lt;td</span> <span class="at">colspan</span>=<span class="vl">"3"</span><span class="tg">&gt;</span><span class="ct">✅ Wave & Orange Money</span><span class="tg">&lt;/td&gt;</span>  <span class="cm">&lt;!-- fusionne 3 col --&gt;</span>',
+  '    <span class="tg">&lt;/tr&gt;</span>',
+  '  <span class="tg">&lt;/tfoot&gt;</span>',
+  '',
+  '<span class="tg">&lt;/table&gt;</span>'
+]) +
+'<div class="tip"><strong>💡 colspan vs rowspan :</strong> <code>colspan="3"</code> = fusion horizontale. <code>rowspan="2"</code> = fusion verticale. Ne jamais utiliser les tableaux pour la mise en page !</div>' +
+'<div class="wrn"><strong>⚠️ Tableaux UNIQUEMENT pour données tabulaires :</strong> Horaires, tarifs, stocks... Pas pour des layouts. C\'est le rôle de CSS Flexbox et Grid.</div>';
+
+// ============================================================
+// HELPERS
+// ============================================================
+function code(fname, lines) {
+  var rows = lines.map(function(l, i) {
+    return '<div class="ln-row"><span class="ln">' + (i+1) + '</span><span class="lc">' + l + '</span></div>';
+  }).join('');
+  return '<div class="cw"><div class="cfl">📄 <span>' + fname + '</span></div><div class="cb">' + rows + '</div><button class="cp" onclick="cpCode(this)">Copier</button></div>';
+}
+
+// ============================================================
+// BUILD
+// ============================================================
+var S = {cur:0, tab:{}, answered:{}, done:{}, scores:{}};
+
+function buildSidebar() {
+  var nav = document.getElementById('nav');
+  nav.innerHTML = MODS.map(function(m) {
+    return '<button class="ni ' + (m.id===0?'act':'') + '" onclick="goMod(' + m.id + ')" id="ni-' + m.id + '">' +
+      '<div class="ni-ic">' + m.icon + '</div>' +
+      '<div class="ni-tx">' + m.title + '</div>' +
+      '<div class="ni-ck">✓</div>' +
+    '</button>';
+  }).join('');
+}
+
+function buildMain() {
+  var main = document.getElementById('main');
+  main.innerHTML = MODS.map(function(m) { return buildMod(m); }).join('');
+  setTimeout(function() { refreshPv(0); }, 100);
+}
+
+function buildMod(m) {
+  return '<div class="mod ' + (m.id===0?'act':'') + '" id="mod-' + m.id + '">' +
+    '<div class="hero">' +
+      '<div class="hero-top"><span class="m-badge">' + m.badge + '</span><span class="m-dur">⏱ ' + m.dur + '</span></div>' +
+      '<div class="m-ttl">' + m.icon + ' ' + m.title + '</div>' +
+      '<div class="tabs">' +
+        '<button class="tb act" onclick="goTab(' + m.id + ',\'cours\')" id="tb-' + m.id + '-cours">📖 Cours</button>' +
+        '<button class="tb" onclick="goTab(' + m.id + ',\'atelier\')" id="tb-' + m.id + '-atelier">⚗️ Atelier Live</button>' +
+        '<button class="tb" onclick="goTab(' + m.id + ',\'exercices\')" id="tb-' + m.id + '-exercices">💪 Exercices</button>' +
+        '<button class="tb" onclick="goTab(' + m.id + ',\'quiz\')" id="tb-' + m.id + '-quiz">🧠 Quiz</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="tab-content act" id="tc-' + m.id + '-cours"><div class="lesson">' + COURS[m.id] + '</div></div>' +
+    '<div class="tab-content" id="tc-' + m.id + '-atelier">' + buildAtelier(m) + '</div>' +
+    '<div class="tab-content" id="tc-' + m.id + '-exercices">' + buildExs(m) + '</div>' +
+    '<div class="tab-content" id="tc-' + m.id + '-quiz">' + buildQuiz(m) + '</div>' +
+  '</div>';
+}
+
+function buildAtelier(m) {
+  var def = DEFAULTS[m.id].replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return '<div class="atl">' +
+    '<div class="ed-s">' +
+      '<div class="ed-tb">' +
+        '<span>📝 index.html</span>' +
+        '<button class="rst-b" onclick="resetEd(' + m.id + ')">↺ Reset</button>' +
+        '<button class="run-b" onclick="refreshPv(' + m.id + ')">▶ Exécuter</button>' +
+      '</div>' +
+      '<textarea class="ced" id="ed-' + m.id + '" spellcheck="false" oninput="refreshPv(' + m.id + ')">' + def + '</textarea>' +
+    '</div>' +
+    '<div class="pv-s">' +
+      '<div class="pv-tb"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span>Aperçu en direct</span></div>' +
+      '<iframe class="pvf" id="pv-' + m.id + '"></iframe>' +
+    '</div>' +
+  '</div>';
+}
+
+function buildExs(m) {
+  var html = '<div class="exp">';
+  m.exs.forEach(function(ex) {
+    var diffClass = ex.diff === 'easy' ? 'easy' : (ex.diff === 'med' ? 'med' : 'hard');
+    var diffLabel = ex.diff === 'easy' ? '⭐ Facile' : (ex.diff === 'med' ? '⭐⭐ Moyen' : '⭐⭐⭐ Difficile');
+    var steps = ex.steps.map(function(s) { return '<li>' + s + '</li>'; }).join('');
+    html += '<div class="exb">' +
+      '<div class="exh">' +
+        '<div class="ex-n">' + ex.n + '</div>' +
+        '<div class="ex-t">' + ex.title + '</div>' +
+        '<span class="ex-d ' + diffClass + '">' + diffLabel + '</span>' +
+      '</div>' +
+      '<div class="exbd">' +
+        '<p>' + ex.desc + '</p>' +
+        '<ul>' + steps + '</ul>' +
+        '<button class="lex" onclick="loadEx(' + m.id + ',\'' + ex.sk + '\')">▶ Ouvrir dans l\'éditeur</button>' +
+      '</div>' +
+    '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+function buildQuiz(m) {
+  var lets = ['A','B','C','D'];
+  var qs = m.quiz.map(function(q, qi) {
+    var opts = q.opts.map(function(o, oi) {
+      return '<div class="opt" id="opt-' + m.id + '-' + qi + '-' + oi + '" onclick="answer(' + m.id + ',' + qi + ',' + oi + ',' + q.c + ')">' +
+        '<div class="opt-l">' + lets[oi] + '</div><div>' + o + '</div>' +
+      '</div>';
+    }).join('');
+    var qcode = q.code ? '<div class="q-code">' + q.code + '</div>' : '';
+    return '<div class="qq" id="qq-' + m.id + '-' + qi + '">' +
+      '<div class="q-n">Question ' + (qi+1) + ' / ' + m.quiz.length + '</div>' +
+      '<div class="q-t">' + q.q + '</div>' +
+      qcode +
+      '<div class="opts">' + opts + '</div>' +
+      '<div class="q-exp" id="exp-' + m.id + '-' + qi + '">💡 ' + q.exp + '</div>' +
+    '</div>';
+  }).join('');
+
+  var nextBtn = m.id < 5
+    ? '<button class="nbtn" onclick="goMod(' + (m.id+1) + ')">Module suivant →</button>'
+    : '<p style="font-size:22px;margin-top:.5rem">🚀🌐💻</p>';
+
+  return '<div class="qp">' +
+    '<div class="qhd"><h2>🧠 Quiz — ' + m.title + '</h2><p>Réponds aux ' + m.quiz.length + ' questions pour valider le module. Tu peux recommencer autant de fois que nécessaire.</p></div>' +
+    '<div class="qprev"><div class="qprev-ic">🎯</div><div class="qprev-inf"><strong id="sd-' + m.id + '">0 / ' + m.quiz.length + '</strong>Réponses correctes</div></div>' +
+    qs +
+    '<div class="qres" id="qr-' + m.id + '">' +
+      '<div class="re-em" id="re-' + m.id + '">🎉</div>' +
+      '<div class="re-st" id="rs-' + m.id + '"></div>' +
+      '<div class="re-ttl" id="rt-' + m.id + '">Résultat</div>' +
+      '<div class="re-sc" id="rsc-' + m.id + '">0/' + m.quiz.length + '</div>' +
+      '<div class="re-msg" id="rm-' + m.id + '"></div>' +
+      '<button class="rbtn" onclick="retryQ(' + m.id + ')">🔄 Recommencer</button>' +
+    '</div>' +
+    '<button class="vbtn" id="vb-' + m.id + '" onclick="validateQ(' + m.id + ')" style="display:none">✅ Voir mes résultats</button>' +
+  '</div>' +
+  '<div class="done-bn" id="db-' + m.id + '">' +
+    '<h3>🏆 Module ' + (m.id+1) + ' validé !</h3>' +
+    '<p>' + (m.id < 5 ? 'Excellent ! Tu peux passer au module suivant.' : '🎓 Tu as complété tout le cours HTML !') + '</p>' +
+    nextBtn +
+  '</div>';
+}
+
+// ============================================================
+// LOGIC
+// ============================================================
+function goMod(id) {
+  document.querySelectorAll('.mod').forEach(function(el) { el.classList.remove('act'); });
+  document.querySelectorAll('.ni').forEach(function(el) { el.classList.remove('act'); });
+  document.getElementById('mod-' + id).classList.add('act');
+  document.getElementById('ni-' + id).classList.add('act');
+  S.cur = id;
+  goTab(id, S.tab[id] || 'cours', true);
+  setTimeout(function() { refreshPv(id); }, 60);
+}
+
+function goTab(mid, tab, force) {
+  if (!force && S.tab[mid] === tab) return;
+  S.tab[mid] = tab;
+  ['cours','atelier','exercices','quiz'].forEach(function(t) {
+    var btn = document.getElementById('tb-' + mid + '-' + t);
+    var tc = document.getElementById('tc-' + mid + '-' + t);
+    if (btn) btn.classList.toggle('act', t === tab);
+    if (tc) tc.classList.toggle('act', t === tab);
+  });
+  if (tab === 'atelier') setTimeout(function() { refreshPv(mid); }, 60);
+}
+
+function refreshPv(mid) {
+  var ed = document.getElementById('ed-' + mid);
+  var pv = document.getElementById('pv-' + mid);
+  if (!ed || !pv) return;
+  var raw = ed.value.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+  var d = pv.contentDocument || pv.contentWindow.document;
+  d.open(); d.write(raw); d.close();
+}
+
+function resetEd(mid) {
+  var ed = document.getElementById('ed-' + mid);
+  if (ed) {
+    ed.value = DEFAULTS[mid];
+    refreshPv(mid);
+  }
+}
+
+function loadEx(mid, key) {
+  var starter = STARTERS[key] || '';
+  var ed = document.getElementById('ed-' + mid);
+  if (ed) { ed.value = starter; refreshPv(mid); }
+  goTab(mid, 'atelier', true);
+}
+
+function cpCode(btn) {
+  var lines = btn.parentElement.querySelectorAll('.lc');
+  var text = Array.from(lines).map(function(l) { return l.innerText; }).join('\n');
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = '✓ Copié !';
+    setTimeout(function() { btn.textContent = 'Copier'; }, 2000);
+  });
+}
+
+function answer(mid, qi, oi, correct) {
+  var opts = document.querySelectorAll('[id^="opt-' + mid + '-' + qi + '-"]');
+  opts.forEach(function(o) { o.classList.add('lck'); o.onclick = null; });
+  var sel = document.getElementById('opt-' + mid + '-' + qi + '-' + oi);
+  if (oi === correct) {
+    sel.classList.add('ok');
+  } else {
+    sel.classList.add('ko');
+    document.getElementById('opt-' + mid + '-' + qi + '-' + correct).classList.add('rev');
+  }
+  document.getElementById('exp-' + mid + '-' + qi).classList.add('sh');
+  if (!S.answered[mid]) S.answered[mid] = new Array(MODS[mid].quiz.length).fill(null);
+  S.answered[mid][qi] = (oi === correct);
+  var score = S.answered[mid].filter(function(a) { return a === true; }).length;
+  document.getElementById('sd-' + mid).textContent = score + ' / ' + MODS[mid].quiz.length;
+  var answered = S.answered[mid].filter(function(a) { return a !== null; }).length;
+  if (answered === MODS[mid].quiz.length) {
+    document.getElementById('vb-' + mid).style.display = 'block';
+  }
+}
+
+function validateQ(mid) {
+  var a = S.answered[mid] || [];
+  var total = MODS[mid].quiz.length;
+  var score = a.filter(function(x) { return x === true; }).length;
+  var pct = score / total;
+  var emoji, stars, title, msg;
+  if (pct === 1)    { emoji='🏆'; stars='⭐⭐⭐⭐⭐'; title='Parfait !';  msg='5/5 ! Tu maîtrises ce module à 100% !'; }
+  else if (pct>=.8) { emoji='🎉'; stars='⭐⭐⭐⭐';   title='Excellent !'; msg='Très bon score ! Quelques points à revoir.'; }
+  else if (pct>=.6) { emoji='👍'; stars='⭐⭐⭐';     title='Bien !';      msg='Bon travail ! Relis les explications des questions manquées.'; }
+  else              { emoji='💪'; stars='⭐⭐';       title='Continue !';  msg='Relis attentivement le cours, tu vas y arriver !'; }
+  document.getElementById('re-' + mid).textContent = emoji;
+  document.getElementById('rs-' + mid).textContent = stars;
+  document.getElementById('rt-' + mid).textContent = title;
+  document.getElementById('rsc-' + mid).textContent = score + ' / ' + total;
+  document.getElementById('rm-' + mid).textContent = msg;
+  document.getElementById('qr-' + mid).classList.add('sh');
+  if (pct >= 0.6) {
+    S.done[mid] = true;
+    document.getElementById('db-' + mid).classList.add('sh');
+    document.getElementById('ni-' + mid).classList.add('done');
+    updateProg();
+  }
+}
+
+function retryQ(mid) {
+  var total = MODS[mid].quiz.length;
+  S.answered[mid] = new Array(total).fill(null);
+  for (var qi = 0; qi < total; qi++) {
+    (function(q) {
+      var opts = document.querySelectorAll('[id^="opt-' + mid + '-' + q + '-"]');
+      opts.forEach(function(o, oi) {
+        o.classList.remove('ok','ko','lck','rev');
+        (function(i) {
+          o.onclick = function() { answer(mid, q, i, MODS[mid].quiz[q].c); };
+        })(oi);
+      });
+      document.getElementById('exp-' + mid + '-' + q).classList.remove('sh');
+    })(qi);
+  }
+  document.getElementById('sd-' + mid).textContent = '0 / ' + total;
+  document.getElementById('qr-' + mid).classList.remove('sh');
+  document.getElementById('vb-' + mid).style.display = 'none';
+}
+
+function updateProg() {
+  var done = Object.values(S.done).filter(Boolean).length;
+  document.getElementById('gpf').style.width = (done / MODS.length * 100) + '%';
+  document.getElementById('gpt').textContent = done + '/' + MODS.length;
+}
+
+// INIT
+buildSidebar();
+buildMain();
+</script>
+</body>
+</html>
